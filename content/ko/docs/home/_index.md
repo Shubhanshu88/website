@@ -9,7 +9,6 @@ display_browse_numbers: true
 linkTitle: "홈"
 main_menu: true
 weight: 10
-hide_feedback: true
 menu:
   main:
     title: "문서"

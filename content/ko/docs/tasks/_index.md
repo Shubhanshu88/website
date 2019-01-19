@@ -9,79 +9,79 @@ content_template: templates/concept
 
 {{% capture overview %}}
 
-쿠버네티스 문서에서 이 섹션은 개별의 태스크를 수행하는 방법을 
-보여준다. 한 태스크 페이지는 일반적으로 여러 단계로 이루어진 짧은 
-시퀀스를 제공함으로써, 하나의 일을 수행하는 방법을 보여준다.
+This section of the Kubernetes documentation contains pages that
+show how to do individual tasks. A task page shows how to do a
+single thing, typically by giving a short sequence of steps.
 
 {{% /capture %}}
 
 {{% capture body %}}
 
-## 웹 UI (대시보드)
+## Web UI (Dashboard)
 
-쿠버네티스 클러스터에서 컨테이너화 된 애플리케이션을 관리 및 모니터하는 것을 돕기 위해서 대시보드 웹 유저 인터페이스를 디플로이하고 접속한다.
+Deploy and access the Dashboard web user interface to help you manage and monitor containerized applications in a Kubernetes cluster.
 
-## kubectl 명령줄 사용하기
+## Using the kubectl Command-line
 
-쿠버네티스 클러스터를 직접 관리하기 위해서 사용되는 `kubectl` 명령줄 도구를 설치 및 설정한다.
+Install and setup the `kubectl` command-line tool used to directly manage Kubernetes clusters.
 
-## 파드 및 컨테이너 구성하기
+## Configuring Pods and Containers
 
-파드 및 컨테이너에 대한 일반적인 구성 태스크를 수행한다.
+Perform common configuration tasks for Pods and Containers.
 
-## 애플리케이션 동작시키기
+## Running Applications
 
-롤링 업데이트, 파드에 정보 주입하기, 파드 수평적 오토스케일링 등, 일반적인 애플리케이션 관리 태스크를 수행한다.
+Perform common application management tasks, such as rolling updates, injecting information into pods, and horizontal Pod autoscaling.
 
-## 잡 동작시키기
+## Running Jobs
 
-병렬 프로세싱을 사용하는 잡을 동작시킨다.
+Run Jobs using parallel processing.
 
-## 클러스터의 애플리케이션에 접근하기
+## Accessing Applications in a Cluster
 
-클러스터 내에 있는 애플리케이션에 접근할 수 있도록 로드 밸런싱, 포트 포워딩, 방화벽 또는 DNS 구성 등을 구성한다.
+Configure load balancing, port forwarding, or setup firewall or DNS configurations to access applications in a cluster.
 
-## 모니터링, 로깅, 디버깅
+## Monitoring, Logging, and Debugging
 
-클러스터 문제를 해결하거나 컨테이너화 된 애플리케이션을 디버깅하기 위해서 모니터링과 로깅을 설정한다.
+Setup monitoring and logging to troubleshoot a cluster or debug a containerized application.
 
-## 쿠버네티스 API에 접근하기
+## Accessing the Kubernetes API
 
-쿠버네티스 API에 직접 접근하는 다양한 방법을 배운다.
+Learn various methods to directly access the Kubernetes API.
 
-## TLS 사용하기
+## Using TLS
 
-클러스터 루트 인증 기관(CA)을 신뢰 및 사용하도록 애플리케이션을 구성한다.
+Configure your application to trust and use the cluster root Certificate Authority (CA).
 
-## 클러스터 운영하기(administering)
+## Administering a Cluster
 
-클러스터를 운영하기 위한 일반적인 태스크를 배운다.
+Learn common tasks for administering a cluster.
 
-## 페더레이션(federation) 운영하기(administering)
+## Administering Federation
 
-클러스터 페더레이션의 컴포넌트들을 구성한다.
+Configure components in a cluster federation.
 
-## 스테이트풀 애플리케이션 관리하기
+## Managing Stateful Applications
 
-스테이트풀 셋의 스케일링, 삭제하기, 디버깅을 포함하는 스테이트풀 애플리케이션 관리를 위한 일반적인 태스크를 수행한다.
+Perform common tasks for managing Stateful applications, including scaling, deleting, and debugging StatefulSets.
 
-## 클러스터 데몬
+## Cluster Daemons
 
-롤링 업데이트를 수행과 같은, 데몬 셋 관리를 위한 일반적인 태스크를 수행한다.
+Perform common tasks for managing a DaemonSet, such as performing a rolling update.
 
-## GPU 관리하기
+## Managing GPUs
 
-클러스터의 노드들에 의해서 리소스로 사용될 NVIDIA GPU들을 구성 및 스케줄한다.
+Configure and schedule NVIDIA GPUs for use as a resource by nodes in a cluster.
 
-## HugePage 관리하기
+## Managing HugePages
 
-클러스터에서 스케줄 가능한 리소스로서 Huge Page들을 구성 및 스케줄한다.
+Configure and schedule huge pages as a schedulable resource in a cluster.
 
 {{% /capture %}}
 
 {{% capture whatsnext %}}
 
-만약 태스크 페이지를 작성하고 싶다면, 
-[문서 풀 리퀘스트(Pull Request) 생성하기](/docs/home/contribute/create-pull-request/)를 참조한다.
+If you would like to write a task page, see
+[Creating a Documentation Pull Request](/docs/home/contribute/create-pull-request/).
 
 {{% /capture %}}

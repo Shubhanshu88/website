@@ -213,7 +213,7 @@ Alternatively, you can use the `kubectl autoscale` command to accomplish the sam
 (and it's easier!)
 
 ```shell
-kubectl autoscale rs frontend --max=10
+kubectl autoscale rs frontend
 ```
 
 ## Alternatives to ReplicaSet

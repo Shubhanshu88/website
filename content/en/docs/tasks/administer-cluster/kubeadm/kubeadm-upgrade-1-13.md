@@ -29,48 +29,22 @@ This page explains how to upgrade a Kubernetes cluster created with `kubeadm` fr
   That is, you cannot skip versions when you upgrade.
   For example, you can upgrade only from 1.10 to 1.11, not from 1.9 to 1.11.
 
-{{< warning >}}
-The command `join --experimental-control-plane` is known to fail on single node clusters created with kubeadm v1.12 and then upgraded to v1.13.x.
-This will be fixed when graduating the `join --control-plane` workflow from alpha to beta.
-A possible workaround is described [here](https://github.com/kubernetes/kubeadm/issues/1269#issuecomment-441116249).
-{{</ warning >}}
-
 {{% /capture %}}
 
 {{% capture steps %}}
 
-## Determine which version to upgrade to
+## Upgrade the control plane
 
-1.  Find the latest stable 1.13 version:
+1.  On your master node, upgrade kubeadm:
 
-    {{< tabs name="k8s_install_versions" >}}
+    {{< tabs name="k8s_install" >}}
     {{% tab name="Ubuntu, Debian or HypriotOS" %}}
-    apt update
-    apt-cache policy kubeadm
-    # find the latest 1.13 version in the list
-    # it should look like 1.13.x-00, where x is the latest patch
+    apt-mark unhold kubelet kubeadm && \
+    apt-get update && apt-get upgrade -y kubelet kubeadm && \
+    apt-mark hold kubelet kubeadm
     {{% /tab %}}
     {{% tab name="CentOS, RHEL or Fedora" %}}
-    yum list --showduplicates kubeadm --disableexcludes=kubernetes
-    # find the latest 1.13 version in the list
-    # it should look like 1.13.x-0, where x is the latest patch
-    {{% /tab %}}
-    {{< /tabs >}}
-
-## Upgrade the control plane node
-
-1.  On your control plane node, upgrade kubeadm:
-
-    {{< tabs name="k8s_install_kubeadm" >}}
-    {{% tab name="Ubuntu, Debian or HypriotOS" %}}
-    # replace x in 1.13.x-00 with the latest patch version
-    apt-mark unhold kubeadm && \
-    apt-get update && apt-get install -y kubeadm=1.13.x-00 && \
-    apt-mark hold kubeadm
-    {{% /tab %}}
-    {{% tab name="CentOS, RHEL or Fedora" %}}
-    # replace x in 1.13.x-0 with the latest patch version
-    yum install -y kubeadm-1.13.x-0 --disableexcludes=kubernetes
+    yum upgrade -y kubeadm --disableexcludes=kubernetes
     {{% /tab %}}
     {{< /tabs >}}
 
@@ -208,39 +182,7 @@ A possible workaround is described [here](https://github.com/kubernetes/kubeadm/
     Check the [addons](/docs/concepts/cluster-administration/addons/) page to
     find your CNI provider and see whether additional upgrade steps are required.
 
-1.  Upgrade the kubelet on the control plane node:
-
-    {{< tabs name="k8s_install_kubelet" >}}
-    {{% tab name="Ubuntu, Debian or HypriotOS" %}}
-    # replace x in 1.13.x-00 with the latest patch version
-    apt-mark unhold kubelet && \
-    apt-get update && apt-get install -y kubelet=1.13.x-00 && \
-    apt-mark hold kubelet
-    {{% /tab %}}
-    {{% tab name="CentOS, RHEL or Fedora" %}}
-    # replace x in 1.13.x-0 with the latest patch version
-    yum install -y kubelet-1.13.x-0 --disableexcludes=kubernetes
-    {{% /tab %}}
-    {{< /tabs >}}
-
-## Ugrade kubectl on all nodes
-
-1.  Upgrade kubectl on all nodes:
-
-    {{< tabs name="k8s_install_kubectl" >}}
-    {{% tab name="Ubuntu, Debian or HypriotOS" %}}
-    # replace x in 1.13.x-00 with the latest patch version
-    apt-mark unhold kubectl && \
-    apt-get update && apt-get install -y kubectl=1.13.x-00 && \
-    apt-mark hold kubectl
-    {{% /tab %}}
-    {{% tab name="CentOS, RHEL or Fedora" %}}
-    # replace x in 1.13.x-0 with the latest patch version
-    yum install -y kubectl-1.13.x-0 --disableexcludes=kubernetes
-    {{% /tab %}}
-    {{< /tabs >}}
-
-## Drain control plane and worker nodes
+## Upgrade master and node packages
 
 1.  Prepare each node for maintenance by marking it unschedulable and evicting the workloads. Run:
 
@@ -248,7 +190,7 @@ A possible workaround is described [here](https://github.com/kubernetes/kubeadm/
     kubectl drain $NODE --ignore-daemonsets
     ```
 
-    On the control plane node, you must add `--ignore-daemonsets`:
+    On the master node, you must add `--ignore-daemonsets`:
 
     ```shell
     kubectl drain ip-172-31-85-18
@@ -267,36 +209,27 @@ A possible workaround is described [here](https://github.com/kubernetes/kubeadm/
     node "ip-172-31-85-18" drained
     ```
 
-## Upgrade the kubelet config on worker nodes
-
-1.  On each node except the control plane node, upgrade the kubelet config:
-
-    ```shell
-    kubeadm upgrade node config --kubelet-version v1.13.x
-    ```
-
-    Replace `x` with the patch version you picked for this ugprade.
-
-
-## Upgrade kubeadm and the kubelet on worker nodes
-
 1.  Upgrade the Kubernetes package version on each `$NODE` node by running the Linux package manager for your distribution:
 
-    {{< tabs name="k8s_kubelet_and_kubeadm" >}}
+    {{< tabs name="k8s_install" >}}
     {{% tab name="Ubuntu, Debian or HypriotOS" %}}
-    # replace x in 1.13.x-00 with the latest patch version
     apt-get update
-    apt-get install -y kubelet=1.13.x-00 kubeadm=1.13.x-00
+    apt-get upgrade -y kubelet kubeadm
     {{% /tab %}}
     {{% tab name="CentOS, RHEL or Fedora" %}}
-    # replace x in 1.13.x-0 with the latest patch version
-    yum install -y kubelet-1.13.x-0 kubeadm-1.13.x-0 --disableexcludes=kubernetes
+    yum upgrade -y kubelet kubeadm --disableexcludes=kubernetes
     {{% /tab %}}
     {{< /tabs >}}
 
-## Restart the kubelet for all nodes
+## Upgrade kubelet on each node
 
-1.  Restart the kubelet process for all nodes:
+1.  On each node except the master node, upgrade the kubelet config:
+
+    ```shell
+    kubeadm upgrade node config --kubelet-version $(kubelet --version | cut -d ' ' -f 2)
+    ```
+
+1.  Restart the kubelet process:
 
     ```shell
     systemctl restart kubelet

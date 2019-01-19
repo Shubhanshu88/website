@@ -551,10 +551,10 @@ plugins:
     kind: Configuration
     limitedResources:
     - resource: pods
-      matchScopes:
-      - scopeName: PriorityClass 
-        operator: In
-        values: ["cluster-services"]
+    matchScopes:
+    - operator : In
+      scopeName: PriorityClass
+      values: ["cluster-services"]
 ```
 
 Now, "cluster-services" pods will be allowed in only those namespaces where a quota object with a matching `scopeSelector` is present.
@@ -562,8 +562,8 @@ For example:
 ```yaml
     scopeSelector:
       matchExpressions:
-      - scopeName: PriorityClass
-        operator: In
+      - operator : In
+        scopeName: PriorityClass
         values: ["cluster-services"]
 ```
 

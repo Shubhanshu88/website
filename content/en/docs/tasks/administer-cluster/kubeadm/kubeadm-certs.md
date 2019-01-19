@@ -121,3 +121,4 @@ Kubeadm sets up [three CAs][cert-cas] by default. Make sure to sign the CSRs wit
 [cert-table]: https://kubernetes.io/docs/setup/certificates/#all-certificates
 
 {{% /capture %}}
+https://prow.k8s.io/?pull=71212
